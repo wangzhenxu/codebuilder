@@ -1,0 +1,5 @@
+import java.util.*;
+
+import ${basepackage}.pojo.*;
+import ${basepackage}.dao.*;
+import ${basepackage}.service.*;

@@ -1,0 +1,156 @@
+<#assign className = table.className>   
+<#assign classNameLower = className?uncap_first>
+<#assign pkColumn="" pkColumnNameLower="" /> 
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${className}">
+
+	<resultMap type="${className}" id="${classNameLower}Map">
+		 <#list table.columns as column>
+	        <#if column.pk>
+	        	<id  column="${column.sqlName}" property="${column.columnNameLower}"></id>
+	        	<#assign pkColumn="${column.sqlName}" pkColumnNameLower="${column.columnNameLower}" /> 
+	        	<#else>
+	        	<result  column="${column.sqlName}" property="${column.columnNameLower}" />
+	        </#if>
+		</#list>
+	</resultMap>
+	
+	<!-- 查询 ${moduleComment}列表 -->
+	<select id="query${className}List" resultMap="${classNameLower}Map">
+		SELECT
+			<#list table.columns as column>
+						 <#if column_has_next>
+						 		${table.sqlName}.${column.sqlName},
+						 	<#else>
+						 		${table.sqlName}.${column.sqlName}
+						</#if>
+			        	
+			</#list>
+		FROM
+			${table.sqlName}
+		<where>
+							<if test="qtype != null and qtype=='like'">
+							</if>
+				<#list table.columns as column>
+				        <#if !column.pk>
+				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !='' ">
+				        		AND ${table.sqlName}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        	</if>
+				        </#if>
+					</#list>
+					
+					<if test="ids !=null">
+				         AND ${table.sqlName}.${pkColumn} IN
+				         <#noparse>
+						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
+									 ${item} 
+							</foreach>
+						</#noparse>
+			        </if>
+		</where>
+		ORDER BY ${table.sqlName}.${pkColumn} desc 
+		<if test="skipResults!=null">
+				limit ${r"#{skipResults}"} ,${r"#{maxResults}"}
+		</if>
+		
+	</select>
+	
+	<!-- 查询 ${moduleComment}列表条数 -->
+	<select id="get${className}ListCount" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			${table.sqlName}
+		<where>
+							<if test="qtype != null and qtype=='like'">
+							</if>
+				<#list table.columns as column>
+				        <#if !column.pk>
+				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !=''">
+				        		AND ${table.sqlName}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        	</if>
+				        </#if>
+				</#list>
+				<if test="ids !=null">
+				         AND ${table.sqlName}.${pkColumn} IN
+				         <#noparse>
+						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
+									 ${item} 
+							</foreach>
+						</#noparse>
+			        </if>
+		</where>
+	</select>
+	
+	
+	<!-- 添加 ${moduleComment} -->
+	<insert id="add${className}" flushCache="true" useGeneratedKeys="true" keyProperty="${pkColumnNameLower}">
+		INSERT INTO ${table.sqlName}
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<#list table.columns as column>
+		        <#if !column.pk>
+		        	<if test="${column.columnNameLower} != null">
+		        		${column.sqlName},
+		        	</if>
+		        </#if>
+			</#list>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<#list table.columns as column>
+			        <#if !column.pk>
+			        	<if test="${column.columnNameLower} != null">
+			        		${r"#{"+"${column.columnNameLower}"+"}"},
+			        	</if>
+			        </#if>
+				</#list>
+		</trim>
+	</insert>
+	
+	<!-- 修改 ${moduleComment} -->
+	<update id="update${className}" >
+		UPDATE  ${table.sqlName}
+		<trim prefix="set" suffixOverrides=",">
+			<#list table.columns as column>
+			        <#if !column.pk>
+			        	<if test="${column.columnNameLower} != null">
+			        		${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"},
+			        	</if>
+			        </#if>
+			  </#list>
+		</trim>
+		WHERE ${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
+	</update>
+
+	<!-- 删除  ${moduleComment} -->
+	<delete id="delete${className}">
+		DELETE FROM ${table.sqlName} 
+		<where>
+				<#list table.columns as column>
+				        	<if test="${column.columnNameLower} != null">
+				        		AND ${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        	</if>
+				</#list>
+		</where>
+	</delete>
+	
+	<!-- 获得  ${moduleComment} -->
+	<select id="get${className}ById" resultMap="${classNameLower}Map">
+		SELECT
+			<#list table.columns as column>
+						 <#if column_has_next>
+						 		${table.sqlName}.${column.sqlName},
+						 	<#else>
+						 		${table.sqlName}.${column.sqlName}
+						</#if>
+			</#list>
+		FROM
+			${table.sqlName}
+		WHERE 
+		${table.sqlName}.${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
+		
+	</select>
+
+</mapper>

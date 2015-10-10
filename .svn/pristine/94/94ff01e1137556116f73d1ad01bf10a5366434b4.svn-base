@@ -1,0 +1,67 @@
+<%@page import="${basepackage}.model.*" %>
+<#include "/macro.include"/> 
+<#include "/custom.include"/> 
+<#assign className = table.className>   
+<#assign classNameLower = className?uncap_first>
+<#assign actionExtension = "do"> 
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/commons/taglibs.jsp" %>
+
+<rapid:override name="head">
+	<title><%=${className}.TABLE_ALIAS%>信息</title>
+</rapid:override>
+
+<rapid:override name="content">
+<body class="mainbody">
+<form action="${actionBasePath}!list.${actionExtension}" method="get">
+<div style="height:8px;"></div>
+	<!-- 无外边框内容区开始 -->
+	<div class="wbkbox">
+	<div class="main-wbktab">
+	<ul><li><span><img src="<c:url value="images/main_ico14.gif"/>" width="16" height="16" border="0" align="absmiddle" /> <%=${className}.TABLE_ALIAS%></span></li></ul>
+	</div>
+	<!-- TAB标签结束 -->
+	<div class="main-wbkcon">
+	<div class="wbk-tit"><span><img
+		src="<c:url value="images/main_ico16.gif"/>" width="15" height="15" /></span><img
+		src="<c:url value="images/main_ico15.gif"/>" width="16" height="16"
+		align="absmiddle" /> <strong class="blue01"><%=${className}.TABLE_ALIAS%></strong></div>
+	<div class="wbk-con">
+	
+		
+		
+	<#list table.columns as column>
+	<#if column.pk>
+		<s:hidden name="${column.columnNameLower}" id="${column.columnNameLower}" value="%{model.${column.columnNameLower}}"/>
+	</#if>
+	</#list>
+	
+		<table class="table02">
+		<#list table.columns as column>
+		<#if !column.htmlHidden>
+			<tr>	
+				<td height="44" align="right" class="trbor1"><%=${className}.ALIAS_${column.constantName}%>：</td>	
+				<td class="trbor1"><#rt>
+				<#compress>
+				<#if column.isDateTimeColumn>
+				<s:property value="%{model.${column.columnNameLower}String}" />
+				<#else>
+				<s:property value="%{model.${column.columnNameLower}}" />
+				</#if>
+				</#compress>
+				<#lt></td>
+			</tr>
+		</#if>
+		</#list>
+		</table>
+		<div class="formControls">
+		<input type="button" value="后退" onclick="history.back();"/>
+		</div>
+	</div>
+	</div>
+	</form>
+	</body>
+</rapid:override>
+
+<%-- jsp模板继承,具体使用请查看: http://code.google.com/p/rapid-framework/wiki/rapid_jsp_extends --%>
+<%@ include file="base.jsp" %>
