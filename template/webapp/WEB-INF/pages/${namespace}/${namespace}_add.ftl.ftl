@@ -6,11 +6,11 @@
 <!-- 右侧 开始 -->
 <div class="right">
     <div class="location">
-     <div class="location01">您现在的位置是：首页 &gt; <a href="control.html">CMS发布管理</a> &gt; 系统发布 &gt;<strong> 增加系统</strong></div>
+     <div class="location01">您现在的位置是：首页 &gt; <a href="control.html">CMS发布管理</a> &gt; 系统发布 &gt;<strong> 添加${pageTitle!''}</strong></div>
     </div>
     <div class="nav">
      <div class="basic">
-	 <div class="basic01">系统发布</div>
+	 <div class="basic01">添加${pageTitle!''}</div>
 	</div>
      <div class="query1">
        <table width="100%" border="0" align="left">
@@ -142,8 +142,11 @@
      </div>
     </div>
     <div class="anniu">
-	   <a href="javascript:void(0)"><img id="addBtn" src="/images/erji1_19.jpg" width="101" height="29" /></a>
-	   &nbsp;&nbsp;<a href="/cmsSolution/sub/list.action"><img   src="/images/gddc_05.jpg"  /></a>
+	  	<div class="btn-group">
+	  			  <button type="button" class="btn btn-default" id="addBtn">保 &nbsp;存</button>
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  		 <button type="button" class="btn btn-default" onclick="jlInfo.tolist();">返&nbsp; 回</button>
+      	</div>
     </div>
    </div>
 <!-- 右侧 结束 -->

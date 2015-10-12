@@ -5,6 +5,9 @@ package ${basepackage}.controller;
 
 <#include "/java_imports.include">
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +26,7 @@ import com.loiot.baqi.constant.Const;
 import com.loiot.baqi.controller.response.AjaxResponse;
 import com.loiot.baqi.controller.response.Pager;
 import com.loiot.baqi.service.*;
+import com.loiot.commons.message.util.JsonUtil;
 import com.timeloit.pojo.Account;
 
 /**
@@ -53,12 +57,22 @@ public class ${className}Controller {
      */
     @RequestMapping(value = "/list")
     public String list(@RequestParam(value = "pi", defaultValue = "0") int pageIndex,
+    		@RequestParam(value = "jsonParam", defaultValue = "{}") String jsonParam,
     	${className} p, ModelMap model)throws Exception {
-    	HashMap<String,Object> pMap = new HashMap<String,Object>();
-    	pMap.put("qtype", "like");
+    	HashMap<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap =JsonUtil.toObject(jsonParam, HashMap.class);
+		Iterator iter = paramMap.entrySet().iterator();
+		while (iter.hasNext()) {
+		Map.Entry entry = (Map.Entry) iter.next();
+    		Object key = entry.getKey();
+    		Object val = entry.getValue();
+    		model.put(String.valueOf(key), val);
+		}
+    	paramMap.put("qtype", "like");
+
         Pager<${className}> pager = ${classNameLower}Service.query${className}ListPage(pMap, pageIndex);
         model.put("pager", pager);
-        //model.put("name", name);
+        model.put("jsonParam", jsonParam);
         return "/${namespace}/${namespace}_list";
     }
 

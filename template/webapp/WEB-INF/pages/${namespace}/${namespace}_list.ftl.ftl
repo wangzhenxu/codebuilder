@@ -6,76 +6,47 @@
   	<#include "../include/comm_jlb_macro.ftl"/>
 <html>
 	<head>
-	<title>网站后台管理系统-产品分类</title>
+	<title>网站后台管理系统-${pageTitle!''}管理</title>
 	<@gmc_common_js "select" />
 </#noparse>	
 </head>
 	<body>
 	<div class="right">
     <div class="location">
-     <div class="location01">您现在的位置是：首页 &gt; <strong>hrQQ</strong></div>
+     <div class="location01">您现在的位置是：首页 &gt; <strong>${pageTitle!''}管理</strong></div>
     </div>
     <div class="sort">
-     <div class="sort1">产品分类</div>
+     <div class="sort1">${pageTitle!''}管理</div>
      <div class="query">
+		<form id="queryForm" >
       <ul>
        <li style="width:22%">
        	<span class="classify">公司名称：</span>
-    	<input name="name" type="text"  class="input"  id="name" value="${name!''}"/>
+    	<input name="name" type="text"   class="input"  id="name" value="${name!''}"/>
        </li>
        <li style="width:15%">
        	<span class="classify">所属行业：</span>
-    	<select id="industryId">
+    	<select id="industryId" name="">
     		 <option value="" > 请选择 </option>
 		  <#noparse>
     		   <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c>
-    		 		<option value="${c.dictionaryId}" <#if industryId??> <#if industryId==c.dictionaryId> selected </#if> </#if>  > ${c.name!''} </option>
+    		 		<option value="${c.dictionaryId}" <#if industryId??> <#if industryId==c.dictionaryId?String> selected </#if> </#if>  > ${c.name!''} </option>
  			 	</#list>
 		  </#noparse>
     	</select>
        </li>
-       <li style="width:20%">
-       	<span class="classify">公司性质：</span>
-    	<select id="companyNature">
-    		 <option value="" > 请选择 </option>
-    		<#noparse>
-    		 <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_NATURE.getCode()) as c>
-    		 	<option value="${c.dictionaryId}" <#if companyNature??> <#if companyNature==c.dictionaryId> selected </#if> </#if> > ${c.name!''} </option>
- 			 </#list>
- 			 </#noparse>
-    	</select>
-       </li>
-        <li style="width:20%">
-       	<span class="classify">公司规模：</span>
-    	<select id="scaleId">
-    		 <option value="" > 请选择 </option>
-    		 <#noparse>	
-    		 <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_SCALE.getCode()) as c>
-    		 	<option value="${c.dictionaryId}" <#if scaleId??> <#if scaleId==c.dictionaryId> selected </#if> </#if> > ${c.name!''} </option>
- 			 </#list>
- 			 </#noparse>
-    	</select>
-       </li>
-        <li style="width:15%">
-       	<span class="classify">融资阶段：</span>
-    	<select id="financingLevelId">
-    		 <option value="" > 请选择 </option>
-    		 <#noparse>
-    		 <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_FINANCING_LEVEL.getCode()) as c>
-    		 	<option value="${c.dictionaryId}" <#if financingLevelId??> <#if financingLevelId==c.dictionaryId> selected </#if> </#if> > ${c.name!''} </option>
- 			 </#list>
- 			 </#noparse>
-    	</select>
-       </li>
        <li style="width:5%"><a href="javascript:void(0)"><img src="/images/erji_06.jpg" width="64" height="26" onclick="${namespace}.query();"/></a></li>
       </ul>
+      </form>
      </div>
     </div>
     <div class="form">
     <#noparse>
       <#if subject.isPermitted("productClass:add")>
     </#noparse>
-     	<div class="form1"><a href="javascript:void(0)"><img src="/images/erji_18.jpg" width="83" height="22" border="0"  name="addpro"  onclick="${namespace}.toAdd();"/></a></div>
+    		<div class="btn-group">
+			  <button type="button" class="btn btn-default"  onclick="${namespace}.toAdd();">增加${pageTitle!''}</button>
+	      	</div>
     <#noparse>
      </#if>
    </#noparse>
@@ -136,13 +107,13 @@
 	 	</#noparse>
         </td>
         
-        <td align="center" class="hui">
-       			 <a  href="javascript:">详情</a>
-        		 <a  href="javascript:">修改</a>
-         		 <a  href="javascript:">删除</a>
-         		 <a  href="javascript:">发布职位</a>
+		 <td align="center" class="hui" style="width:300px;"  >
+	       		<div class="btn-group">
+				  <button type="button" class="btn btn-default"  onclick="">详情</button>
+				  <button type="button" class="btn btn-default"  onclick="">修改</button>
+				  <button type="button" class="btn btn-default"  onclick="">删除</button>
+	      		</div>
         </td>
-         		
        </tr>
        <#noparse>
        </#list>
@@ -150,15 +121,16 @@
        </#
        <tr>
      	 <td colspan="10" valign="middle" class="d">
-     	 	<a href="javascript:emalModal.openTemplateModal();" class=""><img src="/images/del.jpg" width="74" height="26">
-     	 	</a>
+     	 	<div class="btn-group" style="display:none;">
+			  <button type="button" class="btn btn-default"  onclick="javascipt:void(0);">删除</button>
+      	 	</div>
      	 </td>
        </tr>
       </table>
      </div>
 	 <#-- 分页栏 -->
 	 <#noparse>
-     <@pageBar  </#noparse> pager=pager url="/${className}/list.action?" join="&"> <#noparse><@/pageBar> </#noparse>
+     <@pageBar  </#noparse> pager=pager url="/${className}/list.action?jsonParam=${jsonParam!''}" join="&"> <#noparse><@/pageBar> </#noparse>
     
     </div>
    </div>
