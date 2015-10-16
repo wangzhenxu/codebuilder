@@ -1,6 +1,13 @@
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
-<#assign pkColumn="" pkColumnNameLower="" /> 
+<#assign pkColumn="" pkColumnNameLower="" />
+
+<#assign tableAs = ""> 
+<#list "zp_jl_info"?split("_") as s>
+	<#assign tableAs =tableAs+s?substring(0,1)> 
+</#list>
+<#assign tableAs =tableAs?substring(1)> 
+ 
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -23,27 +30,27 @@
 		SELECT
 			<#list table.columns as column>
 						 <#if column_has_next>
-						 		${table.sqlName}.${column.sqlName},
+						 		${tableAs}.${column.sqlName},
 						 	<#else>
-						 		${table.sqlName}.${column.sqlName}
+						 		${tableAs}.${column.sqlName}
 						</#if>
 			        	
 			</#list>
 		FROM
-			${table.sqlName}
+			${table.sqlName}  ${tableAs}
 		<where>
 							<if test="qtype != null and qtype=='like'">
 							</if>
 				<#list table.columns as column>
 				        <#if !column.pk>
 				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !='' ">
-				        		AND ${table.sqlName}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
 				        	</if>
 				        </#if>
 					</#list>
 					
 					<if test="ids !=null">
-				         AND ${table.sqlName}.${pkColumn} IN
+				         AND ${tableAs}.${pkColumn} IN
 				         <#noparse>
 						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
 									 ${item} 
@@ -51,7 +58,7 @@
 						</#noparse>
 			        </if>
 		</where>
-		ORDER BY ${table.sqlName}.${pkColumn} desc 
+		ORDER BY ${tableAs}.${pkColumn} desc 
 		<if test="skipResults!=null">
 				limit ${r"#{skipResults}"} ,${r"#{maxResults}"}
 		</if>
@@ -63,19 +70,19 @@
 		SELECT
 			count(1)
 		FROM
-			${table.sqlName}
+			${table.sqlName}  ${tableAs}
 		<where>
 							<if test="qtype != null and qtype=='like'">
 							</if>
 				<#list table.columns as column>
 				        <#if !column.pk>
 				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !=''">
-				        		AND ${table.sqlName}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
 				        	</if>
 				        </#if>
 				</#list>
 				<if test="ids !=null">
-				         AND ${table.sqlName}.${pkColumn} IN
+				         AND ${tableAs}.${pkColumn} IN
 				         <#noparse>
 						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
 									 ${item} 
@@ -141,16 +148,17 @@
 		SELECT
 			<#list table.columns as column>
 						 <#if column_has_next>
-						 		${table.sqlName}.${column.sqlName},
+						 		${tableAs}.${column.sqlName},
 						 	<#else>
-						 		${table.sqlName}.${column.sqlName}
+						 		${tableAs}.${column.sqlName}
 						</#if>
 			</#list>
 		FROM
-			${table.sqlName}
+			${table.sqlName}  ${tableAs}
 		WHERE 
-		${table.sqlName}.${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
+		${tableAs}.${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
 		
 	</select>
 
 </mapper>
+
