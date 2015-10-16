@@ -8,13 +8,13 @@
 	</comment>
 	
 	<entry key="basepackage">com.loiot.baqi</entry>
-	<entry key="moduleComment">客户信息</entry>
+	<entry key="moduleComment">简历信息</entry>
 	<entry key="moduleAuthor">wangzx</entry>
-	<entry key="pageTitle">wangzx</entry>
+	<entry key="pageTitle">简历</entry>
 	
 	
 	<!-- jsp namespace: web/${namespace}/${className}/list.jsp -->
-	<entry key="namespace">JobMatchkeys</entry>
+	<entry key="namespace">jlInfo</entry>
 
 	<entry key="outRoot">d:\generator-output</entry>
 	

@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,7 @@ public class ${className}Controller {
 		}
     	paramMap.put("qtype", "like");
 
-        Pager<${className}> pager = ${classNameLower}Service.query${className}ListPage(pMap, pageIndex);
+        Pager<${className}> pager = ${classNameLower}Service.query${className}ListPage(paramMap , pageIndex);
         model.put("pager", pager);
         model.put("jsonParam", jsonParam);
         return "/${namespace}/${namespace}_list";
@@ -126,8 +127,9 @@ public class ${className}Controller {
      */
     @RequestMapping(value = "/toEdit")
     public String toEdit${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id, ModelMap model)throws Exception {
-        model.put("p",  ${classNameLower}Service.get${className}ById(id));
-        return "/${namespace}/${namespace}_edit";
+        //model.put("p", ${classNameLower}Service.get${className}ById(id));
+    	model.put("pid",  id);
+        return "/${namespace}/${namespace}_add";
     }
 
     /**
@@ -142,8 +144,9 @@ public class ${className}Controller {
     	try {
         // 获得账号
         //Account account = (Account) session.getAttribute(Const.SESSION_USER_KEY);
-    	//如果前端，没有改变编号，就不用验证
-    	if(!p.getName().equals(p.getName())){
+    		//如果前端，没有改变编号，就不用验证
+        	String onlyName=request.getParameter("onlyName");
+        	if(!StringUtils.isBlank(onlyName) &&  !p.getName().equals(onlyName)){
 	    	//验证唯一性
 	    	HashMap<String,Object> pMap =new HashMap<String,Object>();
 	    	pMap.put("name", p.getName());
@@ -167,8 +170,9 @@ public class ${className}Controller {
      */
     @RequestMapping(value = "/toView")
     public String toView${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id, ModelMap model)throws Exception {
-        model.put("p", ${classNameLower}Service.get${className}ById(id));
-        return "/${namespace}/${namespace}_view";
+        //model.put("p", ${classNameLower}Service.get${className}ById(id));
+    	 model.put("pid",  id);
+    	return "/${namespace}/${namespace}_add";
     }
 
     /**
@@ -180,7 +184,7 @@ public class ${className}Controller {
     public String delete${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id,HttpServletRequest request)throws Exception {
     	${classNameLower}Service.delete${className}(id);
         String s = request.getHeader("Referer");
-        String redirectStr = s.substring(s.indexOf("/${namespace}/"), s.length());
+        String redirectStr = s.substring(s.indexOf("/${classNameLower}/"), s.length());
         return "redirect:"+redirectStr;
     }
     
@@ -190,10 +194,11 @@ public class ${className}Controller {
      * @param id ${className}ID
      */
     @RequestMapping(value = "/ajaxDelete")
+    @ResponseBody
     public Object ajaxDelete${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id) {
     	try {
     		${className} p = new ${className}();
-        	//p.set${className}Id(id);
+        	p.set${pk?cap_first}(id);
 			${classNameLower}Service.delete${className}(p);
 			return AjaxResponse.OK;
     	} catch (Exception e) {
@@ -202,5 +207,35 @@ public class ${className}Controller {
 		  return AjaxResponse.FAILED;
 		}
     }
+    
+    /**
+     * ajax 根据id查询实体bean
+     * @return
+     */
+    @RequestMapping(value = "/getById")
+    @ResponseBody
+    public Object ajaxGetById(@RequestParam(value = "id", required = true) java.lang.Long id)throws Exception {
+    	${className} p = ${classNameLower}Service.get${className}ById(id);
+    	return AjaxResponse.OK(p);
+    }
+    
+    /**
+     * 更新 （停用、启用状态）
+     * 
+     * @param id 
+     */
+    @RequestMapping(value = "/modifyDeleteStatus")
+    public String modifyDeleteStatus(@RequestParam(value = "id", required = true) java.lang.Long id,
+    		@RequestParam(value = "deleteStatus", required = true) java.lang.Integer isDelete,
+    		HttpServletRequest request)throws Exception {
+    	${className} p = new ${className}();
+    	p.set${pk?cap_first}(id);
+    	p.setIsDelete(isDelete);
+    	${classNameLower}Service.update${className}(p);
+        String s = request.getHeader("Referer");
+        String redirectStr = s.substring(s.indexOf("/${classNameLower}/"), s.length());
+        return "redirect:"+redirectStr;
+    }
+    
 
 }

@@ -1,7 +1,9 @@
 <#include "/custom.include">
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
+
 <#include "/web_common_macro_include">
+
 <#noparse>
   	<#include "../include/comm_jlb_macro.ftl"/>
 <html>
@@ -109,9 +111,21 @@
         
 		 <td align="center" class="hui" style="width:300px;"  >
 	       		<div class="btn-group">
-				  <button type="button" class="btn btn-default"  onclick="">详情</button>
-				  <button type="button" class="btn btn-default"  onclick="">修改</button>
-				  <button type="button" class="btn btn-default"  onclick="">删除</button>
+				  <button type="button" class="btn btn-default"  onclick="${namespace}.toDetail('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">详情</button>
+				  <button type="button" class="btn btn-default"  onclick="${namespace}.toEdit('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">修改</button>
+				  <#noparse>
+				  <#if c.isDelete??>
+				  </#noparse>
+				  	<button type="button" class="btn btn-default"  onclick=${namespace}.modifyDeleteStatus('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>', <#noparse>'${c.isDelete!""}' </#noparse>);>
+				  	 <#noparse>
+				  	 	<#if c.isDelete==PauseStartType.START.getCode()> 暂停 </#if>
+				  	 	<#if c.isDelete==PauseStartType.PAUSE.getCode()> 启用 </#if>
+				  	 </#noparse>
+				  </button>	
+				  <#noparse>
+				  </#if>
+				  </#noparse>
+				  <button type="button" class="btn btn-default"  onclick="${namespace}.toAddJob('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">发布职位</button>
 	      		</div>
         </td>
        </tr>
@@ -130,7 +144,7 @@
      </div>
 	 <#-- 分页栏 -->
 	 <#noparse>
-     <@pageBar  </#noparse> pager=pager url="/${className}/list.action?jsonParam=${jsonParam!''}" join="&"> <#noparse><@/pageBar> </#noparse>
+     <@pageBar  </#noparse> pager=pager url="/${className}/list.action?jsonParam=<#noparse>${jsonParam!''}</#noparse>" join="&"> <#noparse></@pageBar> </#noparse>
     
     </div>
    </div>

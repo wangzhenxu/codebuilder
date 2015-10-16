@@ -8,3 +8,10 @@
 
 <#assign namespaceUpper = namespace?cap_first >
 <#assign namespaceLower = namespace?uncap_first >
+<#assign pk = ""> 
+
+<#list table.columns as column>
+	<#if column.pk>
+		<#assign pk = column.columnNameLower> 
+	</#if>
+</#list>
