@@ -21,20 +21,26 @@ var ${namespaceLower} = {
 	addform : jQuery("#addform"), //添加form
 	queryfrom :jQuery("#queryForm"), //查询form
 	addBtn : $("#addBtn"),//添加按钮
-    
+	queryBtn : $("#queryBtn"),//查询按钮
+
 	//属性
 	<@generateFields/>
 	//页面初始化
 	initPage : function (){
 		var self = this;
 		self.currPage = common.getCurrPageFlag();
-		self.addform.validationEngine({scroll:false});
-		self.addBtn.click(function(){
-			self.add();
-		});
 		//初始化标题
-		self.initPageTitle();
-		//查询数据
+		common.initPageTitle();
+		//列表页面
+		if(self.currPage!="list"){
+			self.addform.validationEngine({scroll:false});
+			self.addBtn.click(function(){
+				self.add();
+			});
+		}
+		if(self.currPage=="list"){
+			self.initSeletePage();
+		}else
 		if(self.currPage=="edit"){
 			self.initEditPage();
 		} else 
@@ -45,22 +51,20 @@ var ${namespaceLower} = {
 			self.initDetailPage();
 		}
 	},
-	//初始化页面标题
-	initPageTitle : function (){
-		var self = this;
-		var attrVal = self._title_val;
-		if(self.currPage=="edit"){
-			this.m_title.html("修改"+attrVal+"信息");
-		} else 
-		if(self.currPage=="add"){
-			this.m_title.html("添加"+attrVal);
-		}else 
-		if(self.currPage=="detail"){
-			this.m_title.html(attrVal+"详情");
-		}
-	},
+	initSeletePage : function (){
+		var self =this;
+		self.queryfrom.validationEngine({scroll:false});
+		self.queryBtn.click(function(){
+			self.query();
+		});
+    },
 	//列表查询
 	query : function(){
+		var self = this;
+		var b = self.queryfrom.validationEngine('validate');
+		if(!b){
+			return false;
+		}
 		var serializeObj = common.serializeJson("queryForm");
 		var jsonStr = JSON.stringify(serializeObj)
 		location.href=this.listUrl+"?jsonParam="+jsonStr;

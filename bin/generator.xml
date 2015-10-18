@@ -38,6 +38,9 @@
 	<entry key="java_typemapping.java.sql.Clob">String</entry>
 	
 	<!-- Mysql -->
+	<!--	
+	<entry key="jdbc.url">jdbc:mysql://123.57.250.160:3306/testdb?useUnicode=true&amp;characterEncoding=UTF-8</entry>
+	-->
 	<entry key="jdbc.url">jdbc:mysql://123.57.250.160:3306/testdb?useUnicode=true&amp;characterEncoding=UTF-8</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 

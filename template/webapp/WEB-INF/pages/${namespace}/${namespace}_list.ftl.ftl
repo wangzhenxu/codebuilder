@@ -15,31 +15,12 @@
 	<body>
 	<div class="right">
     <div class="location">
-     <div class="location01">您现在的位置是：首页 &gt; <strong>${pageTitle!''}管理</strong></div>
+     <div class="location01">您现在的位置是：首页 &gt; <strong class="m_title"></strong></div>
     </div>
     <div class="sort">
-     <div class="sort1">${pageTitle!''}管理</div>
+     <div class="sort1 m_title" ></div>
      <div class="query">
-		<form id="queryForm" >
-      <ul>
-       <li style="width:22%">
-       	<span class="classify">公司名称：</span>
-    	<input name="name" type="text"   class="input"  id="name" value="${name!''}"/>
-       </li>
-       <li style="width:15%">
-       	<span class="classify">所属行业：</span>
-    	<select id="industryId" name="">
-    		 <option value="" > 请选择 </option>
-		  <#noparse>
-    		   <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c>
-    		 		<option value="${c.dictionaryId}" <#if industryId??> <#if industryId==c.dictionaryId?String> selected </#if> </#if>  > ${c.name!''} </option>
- 			 	</#list>
-		  </#noparse>
-    	</select>
-       </li>
-       <li style="width:5%"><a href="javascript:void(0)"><img src="/images/erji_06.jpg" width="64" height="26" onclick="${namespace}.query();"/></a></li>
-      </ul>
-      </form>
+		   <@generateQueryForm/>
      </div>
     </div>
     <div class="form">
@@ -153,5 +134,70 @@
 	<#include "../include/deleteConfirmModal.ftl">
 	</#noparse>
     <script src="/js/${namespace}.js"></script>
+    <script>
+		${namespace}.initPage();
+	</script>
 </html>
+
+
+
+<#macro generateQueryForm>
+  	<#assign countIteam =0 />
+  	<#assign countIteamT =0 />
+  	
+	<form id="queryForm" >
+	<ul>
+			 <li style="width:22%">
+		       	<span class="classify">公司名称：</span>
+		    	<input name="name" type="text"   class="input"  id="name" value="${name!''}"/>
+		      </li>
+		<#list table.columns as column>
+		<#if column.pk>
+			<#elseif column.javaType=="java.lang.Long" >
+			<#assign countIteamT = countIteamT+1 />
+			    <#if countIteam?number lt 4>
+			    	<#assign countIteam = countIteam+1 />
+			       <li style="width:15%">
+			       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
+			    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
+			    		 <option value="" > 请选择 </option>
+			    		  <#noparse>
+			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.name!''} </option>
+			 			 	</#list>
+					  	</#noparse>
+			    	</select>
+			       </li>
+		    </#if></#if></#list>
+		    <li style="width:5%"><a href="javascript:void(0)">
+  		 		<button type="button" class="btn btn-default" id="queryBtn" >查&nbsp;询</button>
+       		</li>
+      </ul>
+      
+     <#if countIteamT gt 4>
+        <#assign countIteam = 0 />
+      	<ul>
+  		<#list table.columns as column>
+			<#if column.pk>
+			<#elseif column.javaType=="java.lang.Long" >
+				    <#assign countIteam = countIteam+1 />
+				   <#if countIteam gt 4>
+				       <li style="width:15%">
+				       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
+				    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
+			    		 <option value="" > 请选择 </option>
+			    		  <#noparse>
+			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.name!''} </option>
+			 			 	</#list>
+					  	</#noparse>
+			    		  </select>
+				       </li>
+			       </#if>
+	          </#if>
+          </#list>
+      	</ul>
+      </#if>
+  </form>
+</#macro>
 
