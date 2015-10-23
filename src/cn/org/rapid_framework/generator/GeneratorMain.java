@@ -39,7 +39,7 @@ public class GeneratorMain {
 //		g.generateByTable("performance_userDetail","template");
 	      
 		
-		g.generateByTable("zp_jl_info","template");
+		g.generateByTable("zp_jl_expand_info","template");
 	
 		
  

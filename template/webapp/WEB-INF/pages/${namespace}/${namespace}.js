@@ -22,6 +22,8 @@ var ${namespaceLower} = {
 	queryfrom :jQuery("#queryForm"), //查询form
 	addBtn : $("#addBtn"),//添加按钮
 	queryBtn : $("#queryBtn"),//查询按钮
+	left_menu_selected_id : "${classNameLower}_list",   //左侧菜单选择id  
+
 
 	//属性
 	<@generateFields/>
@@ -29,6 +31,8 @@ var ${namespaceLower} = {
 	initPage : function (){
 		var self = this;
 		self.currPage = common.getCurrPageFlag();
+		common.initLeftMenuSelected(self.left_menu_selected_id);
+
 		//初始化标题
 		common.initPageTitle();
 		//列表页面
@@ -99,6 +103,9 @@ var ${namespaceLower} = {
 					$("input").attr("disabled",true);
 					self.addBtn.hide();
 					$("._detail").show();
+				}//不存在
+				else if (result.s==-1000) {
+					location.href = common.notFindUrl;
 				}  
 				else {
 					common.alert(result.d);
@@ -144,6 +151,9 @@ var ${namespaceLower} = {
 		self.getById(this.${pk}.val(),function (result){
 			if (result.s > 0) {
 				self.setForm(result.data);
+			}//不存在
+			else if (result.s==-1000) {
+				location.href = common.notFindUrl;
 			}  
 			else {
 				common.alert(resp.d);

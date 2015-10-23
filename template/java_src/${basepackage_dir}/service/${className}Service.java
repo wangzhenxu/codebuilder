@@ -57,6 +57,42 @@ public class ${className}Service{
         pager.setData(${classNameLower}List);
         return pager;
     }
+    
+    
+    
+    
+    /**
+     * 查询 ${moduleComment}（假）分页
+     * 
+     * @param name ${moduleComment}名称
+     * @param pageIndex 页索引
+     * @return
+     */
+    public Pager<${className}> queryFlasePageList(HashMap<String,Object> pMap, int pageIndex)throws Exception {
+    	//假分页
+    	Pager<${className}> pager = this.setPkList(pMap,pageIndex);
+    	List<${className}> ${classNameLower}List = ${classNameLower}Dao.query${className}List(pMap);
+        pager.setData(${classNameLower}List);
+        return pager;
+    }
+    
+    /**
+     * 设置 假分页id集合到Map中
+     * @param pMap
+     * @param pageIndex
+     * @return
+     * @throws Exception
+     */
+    public Pager<${className}> setPkList(HashMap<String,Object> pMap,int pageIndex) throws Exception{
+    	  // 查询职位匹配信息列表总条数
+        List<${className}> list = ${classNameLower}Dao.query${className}List(pMap);
+        // 构造一个分页器
+        Pager<${className}> pager = new Pager<${className}>(list.size(), pageIndex, 5,list);
+        List<${className}> idsList = pager.getCurrentPageData();
+        List<Long> ids =this.getIds(idsList);
+        pMap.put("ids", ids);
+        return pager;
+    }
 	
 	 /**
      * 添加 ${moduleComment}
@@ -105,6 +141,27 @@ public class ${className}Service{
         return  ${classNameLower}Dao.get${className}ById(id);
     }
     
+    /**
+     * 获得  ${moduleComment}
+     * 
+     * @param id ${moduleComment}Id
+     * 
+     * @return 返回与ID匹配的${moduleComment}
+     */
+    public ${className} get${className}ById(${table.idColumn.javaType} id,Long accountId)throws Exception {
+        return  ${classNameLower}Dao.get${className}ById(id,accountId);
+    }
+    
+    
+    /**
+     * 获得  ${moduleComment}
+     * 
+     * @param id ${moduleComment}Id
+     * 
+     */
+    public ${className} get${className}(HashMap<String,Object> pMap)throws Exception {
+    	return (${className}) ${classNameLower}Dao.get${className}(pMap);
+    }
     /**
      * 获得  ${moduleComment}
      * 

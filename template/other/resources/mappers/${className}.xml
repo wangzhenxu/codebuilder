@@ -3,11 +3,10 @@
 <#assign pkColumn="" pkColumnNameLower="" />
 
 <#assign tableAs = ""> 
-<#list "zp_jl_info"?split("_") as s>
+<#list table.sqlName?split("_") as s>
 	<#assign tableAs =tableAs+s?substring(0,1)> 
 </#list>
 <#assign tableAs =tableAs?substring(1)> 
- 
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -28,36 +27,8 @@
 	<!-- 查询 ${moduleComment}列表 -->
 	<select id="query${className}List" resultMap="${classNameLower}Map">
 		SELECT
-			<#list table.columns as column>
-						 <#if column_has_next>
-						 		${tableAs}.${column.sqlName},
-						 	<#else>
-						 		${tableAs}.${column.sqlName}
-						</#if>
-			        	
-			</#list>
-		FROM
-			${table.sqlName}  ${tableAs}
-		<where>
-							<if test="qtype != null and qtype=='like'">
-							</if>
-				<#list table.columns as column>
-				        <#if !column.pk>
-				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !='' ">
-				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
-				        	</if>
-				        </#if>
-					</#list>
-					
-					<if test="ids !=null">
-				         AND ${tableAs}.${pkColumn} IN
-				         <#noparse>
-						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
-									 ${item} 
-							</foreach>
-						</#noparse>
-			        </if>
-		</where>
+			<include refid="getParamSQL"></include>
+			<include refid="getListSQL"></include>
 		ORDER BY ${tableAs}.${pkColumn} desc 
 		<if test="skipResults!=null">
 				limit ${r"#{skipResults}"} ,${r"#{maxResults}"}
@@ -69,27 +40,7 @@
 	<select id="get${className}ListCount" resultType="int">
 		SELECT
 			count(1)
-		FROM
-			${table.sqlName}  ${tableAs}
-		<where>
-							<if test="qtype != null and qtype=='like'">
-							</if>
-				<#list table.columns as column>
-				        <#if !column.pk>
-				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !=''">
-				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
-				        	</if>
-				        </#if>
-				</#list>
-				<if test="ids !=null">
-				         AND ${tableAs}.${pkColumn} IN
-				         <#noparse>
-						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
-									 ${item} 
-							</foreach>
-						</#noparse>
-			        </if>
-		</where>
+			<include refid="getListSQL"></include>
 	</select>
 	
 	
@@ -146,6 +97,40 @@
 	<!-- 获得  ${moduleComment} -->
 	<select id="get${className}ById" resultMap="${classNameLower}Map">
 		SELECT
+			<include refid="getParamSQL"></include>
+			<include refid="getListSQL"></include>
+		
+	</select>
+	
+	<!-- getListSQL -->
+	<sql id="getListSQL">
+			FROM
+			${table.sqlName}  ${tableAs}
+		<where>
+					<if test="qtype != null and qtype=='like'">
+						<if test="nameT != null and nameT !='' ">
+				        		AND ${tableAs}.name like <#noparse>'%${nameT}%' </#noparse>
+			        	</if>
+					</if>
+					<#list table.columns as column>
+				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !='' ">
+				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 
+				        	</if>
+					</#list>
+					
+					<if test="ids !=null">
+				         AND ${tableAs}.${pkColumn} IN
+				         <#noparse>
+						    <foreach  item="item" collection="ids"  index="index" open="(" separator="," close=")"> 
+									 ${item} 
+							</foreach>
+						</#noparse>
+			        </if>
+		</where>
+	</sql>
+	
+	<!-- sql 参数 -->
+	<sql id="getParamSQL">
 			<#list table.columns as column>
 						 <#if column_has_next>
 						 		${tableAs}.${column.sqlName},
@@ -153,12 +138,7 @@
 						 		${tableAs}.${column.sqlName}
 						</#if>
 			</#list>
-		FROM
-			${table.sqlName}  ${tableAs}
-		WHERE 
-		${tableAs}.${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
-		
-	</select>
+	</sql>
 
 </mapper>
 

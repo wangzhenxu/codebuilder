@@ -27,8 +27,11 @@ import com.loiot.baqi.constant.Const;
 import com.loiot.baqi.controller.response.AjaxResponse;
 import com.loiot.baqi.controller.response.Pager;
 import com.loiot.baqi.service.*;
+import com.loiot.baqi.status.AccountType;
 import com.loiot.commons.message.util.JsonUtil;
 import com.timeloit.pojo.Account;
+import com.loiot.baqi.utils.UserSessionUtils;
+
 
 /**
  * ${moduleComment} 处理器。
@@ -60,21 +63,41 @@ public class ${className}Controller {
     public String list(@RequestParam(value = "pi", defaultValue = "0") int pageIndex,
     		@RequestParam(value = "jsonParam", defaultValue = "{}") String jsonParam,
     	${className} p, ModelMap model)throws Exception {
-    	HashMap<String,Object> paramMap = new HashMap<String,Object>();
-		paramMap =JsonUtil.toObject(jsonParam, HashMap.class);
+    	HashMap<String,Object> paramMap=this.getParaMap(jsonParam, model);
+    	paramMap.put("qtype", "like");
+    	//用户数据过滤
+    	/*
+    	if(UserSessionUtils.getAccountType()==AccountType.HR.getCode() || UserSessionUtils.getAccountType()==AccountType.JOB_HUNTER.getCode() ){
+    		paramMap.put("inPerson", UserSessionUtils.getAccount().getAccountId());
+    	}*/
+        Pager<${className}> pager = ${classNameLower}Service.query${className}ListPage(paramMap , pageIndex);
+        model.put("pager", pager);
+        model.put("jsonParam", jsonParam);
+        return "/${namespace}/${namespace}_list";
+    }
+    
+    /**
+     * 获取查询条件
+     * @param jsonParam
+     * @param model
+     * @return
+     */
+    public HashMap<String,Object> getParaMap(String jsonParam,ModelMap model){
+    	HashMap<String,Object> newParamMap = newParamMap =  new HashMap<String,Object>();
+    	 HashMap<String,Object> paramMap =JsonUtil.toObject(jsonParam, HashMap.class);
 		Iterator iter = paramMap.entrySet().iterator();
 		while (iter.hasNext()) {
 		Map.Entry entry = (Map.Entry) iter.next();
     		Object key = entry.getKey();
     		Object val = entry.getValue();
+    		if(key.toString().equals("name")){
+    			newParamMap.put("nameT", val);
+    		}else{
+    			newParamMap.put(String.valueOf(key), val);
+    		}
     		model.put(String.valueOf(key), val);
 		}
-    	paramMap.put("qtype", "like");
-
-        Pager<${className}> pager = ${classNameLower}Service.query${className}ListPage(paramMap , pageIndex);
-        model.put("pager", pager);
-        model.put("jsonParam", jsonParam);
-        return "/${namespace}/${namespace}_list";
+		return newParamMap;
     }
 
     /**
@@ -215,7 +238,16 @@ public class ${className}Controller {
     @RequestMapping(value = "/getById")
     @ResponseBody
     public Object ajaxGetById(@RequestParam(value = "id", required = true) java.lang.Long id)throws Exception {
-    	${className} p = ${classNameLower}Service.get${className}ById(id);
+    	${className} p=null;
+     	//用户数据过滤
+     	/*if(UserSessionUtils.getAccountType()==AccountType.HR.getCode() || UserSessionUtils.getAccountType()==AccountType.JOB_HUNTER.getCode() ){
+     		  p = ${classNameLower}Service.get${className}ById(id, UserSessionUtils.getAccount().getAccountId());
+     	} else {
+   		      p = ${classNameLower}Service.get${className}ById(id);
+     	}*/
+     	if(p==null){
+     		return AjaxResponse.NOEXITS;
+     	}
     	return AjaxResponse.OK(p);
     }
     

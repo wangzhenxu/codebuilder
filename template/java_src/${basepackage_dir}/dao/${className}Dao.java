@@ -1,3 +1,4 @@
+<#include "/custom.include">
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>   
 package ${basepackage}.dao;
@@ -66,7 +67,33 @@ public class ${className}Dao extends SqlSessionDaoSupport{
      * @return 返回与ID匹配的${moduleComment}
      */
     public ${className} get${className}ById(${table.idColumn.javaType} id)throws Exception {
-        return (${className}) getSqlSession().selectOne("${className}.get${className}ById", id);
+    	HashMap<String, Object> pMap = new HashMap<String, Object>();
+    	pMap.put("${pk}", id);
+    	return (${className}) getSqlSession().selectOne("${className}.get${className}ById", pMap);
+    }
+    
+    /**
+     * 获得  ${moduleComment}
+     * 
+     * @param id ${moduleComment}Id
+     * 
+     * @return 返回与ID匹配的${moduleComment}
+     */
+    public ${className} get${className}ById(${table.idColumn.javaType} id,Long accountId)throws Exception {
+    	HashMap<String, Object> pMap = new HashMap<String, Object>();
+    	pMap.put("${pk}", id);
+    	pMap.put("inPerson", accountId);
+    	return (${className}) getSqlSession().selectOne("${className}.get${className}ById", pMap);
+    }
+    
+    /**
+     * 获得  ${moduleComment}
+     * 
+     * @param id ${moduleComment}Id
+     * 
+     */
+    public ${className} get${className}(HashMap<String,Object> pMap)throws Exception {
+    	return (${className}) getSqlSession().selectOne("${className}.query${className}List", pMap);
     }
     
     /**

@@ -25,8 +25,7 @@
     </div>
     <div class="form">
     <#noparse>
-      <#if subject.isPermitted("productClass:add")>
-    </#noparse>
+      <#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:add  -->
     		<div class="btn-group">
 			  <button type="button" class="btn btn-default"  onclick="${namespace}.toAdd();">增加${pageTitle!''}</button>
 	      	</div>
@@ -92,9 +91,23 @@
         
 		 <td align="center" class="hui" style="width:300px;"  >
 	       		<div class="btn-group">
+	       		 <#noparse>
+      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse>  <#noparse><#--</#noparse>${classNameLower}:detail  -->
 				  <button type="button" class="btn btn-default"  onclick="${namespace}.toDetail('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">详情</button>
+				 <#noparse>
+				 </#if>
+				 </#noparse>
+				 
+				   <#noparse>
+      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:edit  -->
 				  <button type="button" class="btn btn-default"  onclick="${namespace}.toEdit('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">修改</button>
 				  <#noparse>
+				 </#if>
+				 </#noparse>
+				 
+				    <#noparse>
+      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:disableAndEnabled  -->
+				   <#noparse>
 				  <#if c.isDelete??>
 				  </#noparse>
 				  	<button type="button" class="btn btn-default"  onclick=${namespace}.modifyDeleteStatus('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>', <#noparse>'${c.isDelete!""}' </#noparse>);>
@@ -106,6 +119,10 @@
 				  <#noparse>
 				  </#if>
 				  </#noparse>
+				   <#noparse>
+				 	</#if>
+				 </#noparse>
+				 
 				  <button type="button" class="btn btn-default"  onclick="${namespace}.toAddJob('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">发布职位</button>
 	      		</div>
         </td>
@@ -116,9 +133,16 @@
        </#
        <tr>
      	 <td colspan="10" valign="middle" class="d">
-     	 	<div class="btn-group" style="display:none;">
-			  <button type="button" class="btn btn-default"  onclick="javascipt:void(0);">删除</button>
-      	 	</div>
+     	 
+     	   <#noparse>
+      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:delete  -->
+		    <#noparse>
+     	 	 <div class="btn-group" style="display:none;">
+			   <button type="button" class="btn btn-default"  onclick="javascipt:void(0);">删除</button>
+      	 	 </div>
+				</#if>
+		 	</#noparse>
+     	 	
      	 </td>
        </tr>
       </table>
