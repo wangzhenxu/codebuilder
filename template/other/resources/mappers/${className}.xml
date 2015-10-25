@@ -1,7 +1,7 @@
+<#include "/custom.include">
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
 <#assign pkColumn="" pkColumnNameLower="" />
-
 <#assign tableAs = ""> 
 <#list table.sqlName?split("_") as s>
 	<#assign tableAs =tableAs+s?substring(0,1)> 
@@ -22,6 +22,9 @@
 	        	<result  column="${column.sqlName}" property="${column.columnNameLower}" />
 	        </#if>
 		</#list>
+		<#if inPerson!="">
+			<result  column="inPersonName" property="inPersonName" />
+		</#if>
 	</resultMap>
 	
 	<!-- 查询 ${moduleComment}列表 -->
@@ -106,6 +109,9 @@
 	<sql id="getListSQL">
 			FROM
 			${table.sqlName}  ${tableAs}
+			<#if inPerson!="">
+			LEFT JOIN account a ON a.account_id =${tableAs}.in_person
+			</#if>
 		<where>
 					<if test="qtype != null and qtype=='like'">
 						<if test="nameT != null and nameT !='' ">
@@ -138,6 +144,9 @@
 						 		${tableAs}.${column.sqlName}
 						</#if>
 			</#list>
+			<#if inPerson!="">
+								,a.username as inPersonName
+			</#if>
 	</sql>
 
 </mapper>

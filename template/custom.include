@@ -8,10 +8,13 @@
 
 <#assign namespaceUpper = namespace?cap_first >
 <#assign namespaceLower = namespace?uncap_first >
-<#assign pk = ""> 
+<#assign pk = "">
+<#assign inPerson ="" > 
 
 <#list table.columns as column>
 	<#if column.pk>
-		<#assign pk = column.columnNameLower> 
+		<#assign pk = column.columnNameLower>
+	<#elseif column.columnNameLower=="inPerson">
+     	<#assign inPerson = column.columnNameLower>
 	</#if>
 </#list>

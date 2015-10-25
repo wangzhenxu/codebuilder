@@ -192,7 +192,7 @@
 	<#if  column.columnNameLower=="inPerson"  >
 	   <tr style="display:none;" class="_detail">
            <td  align="right" class="hui1">录入人：</td>
-           <td  align="left" valign="middle"  colspan="3" id="${column.columnNameLower}">
+           <td  align="left" valign="middle"  colspan="3" id="${column.columnNameLower}Name">
            </td>
          </tr>
      <#elseif column.columnNameLower=="inDatetime" || column.columnNameLower=="inTime">

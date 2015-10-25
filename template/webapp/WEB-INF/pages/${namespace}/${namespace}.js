@@ -220,6 +220,9 @@ private ${className}Id id;
 	${column.columnNameLower} : $("#${column.columnNameLower}"), //${column.columnAlias!}
 </#list>
 </#if>
+<#if inPerson!="">
+	${inPerson}Name : $("#inPersonName"),
+</#if>
 </#macro>
 
 <#macro generateUpdateFields>
@@ -259,4 +262,7 @@ private ${className}Id id;
 		self.${column.columnNameLower}.val(obj.${column.columnNameLower}); //${column.columnAlias!}
 	</#if>
 </#list>
+	<#if inPerson!="">
+		self.inPersonName : obj.inPersonName;
+	</#if>
 </#macro>

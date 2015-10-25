@@ -1,4 +1,5 @@
 <#include "/macro.include"/>
+<#include "/custom.include">
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
 package ${basepackage}.pojo;
@@ -18,6 +19,9 @@ public class ${className}  implements java.io.Serializable{
 	private static final long serialVersionUID = 5454155825314635342L;
 	
 	<@generateFields/>
+	<#if inPerson!="">
+	  private java.lang.String ${inPerson}Name;
+	</#if>
 	<@generateCompositeIdConstructorIfis/>
 	
 }
