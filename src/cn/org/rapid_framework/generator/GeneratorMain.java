@@ -39,7 +39,7 @@ public class GeneratorMain {
 //		g.generateByTable("performance_userDetail","template");
 	      
 		
-		g.generateByTable("zp_job_matching_keys","template");
+		g.generateByTable("account_expand_info","template");
 	
 		
  

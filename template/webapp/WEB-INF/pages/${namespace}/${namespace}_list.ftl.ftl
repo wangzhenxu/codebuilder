@@ -187,7 +187,7 @@
 			    		 <option value="" > 请选择 </option>
 			    		  <#noparse>
 			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
-			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.name!''} </option>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
 			 			 	</#list>
 					  	</#noparse>
 			    	</select>
@@ -212,7 +212,7 @@
 			    		 <option value="" > 请选择 </option>
 			    		  <#noparse>
 			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
-			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.name!''} </option>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
 			 			 	</#list>
 					  	</#noparse>
 			    		  </select>

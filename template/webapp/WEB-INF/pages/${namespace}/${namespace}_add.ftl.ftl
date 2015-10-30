@@ -1,7 +1,7 @@
 <#include "/web_common_macro_include">
 <#noparse>
 <#include "../include/comm_jlb_macro.ftl"/>
-<#gmc_common_js "add" />
+<@gmc_common_js "add" />
 </#noparse>
 <form id="addform" name="form"  method="post">
 
@@ -15,7 +15,7 @@
 <!-- 右侧 开始 -->
 <div class="right">
     <div class="location">
-     <div class="location01">您现在的位置是：首页 &gt; <a href="control.html">CMS发布管理</a> &gt; 系统发布 &gt;<strong class="m_title" > 添加${pageTitle!''}</strong></div>
+     <div class="location01">您现在的位置是：首页 &gt; <a href="javascript:${namespace}.tolist();">CMS发布管理</a> &gt; 系统发布 &gt;<strong class="m_title" > 添加${pageTitle!''}</strong></div>
     </div>
     <div class="nav">
      <div class="basic">
@@ -55,7 +55,7 @@
            <td  align="left" valign="middle">
 	          	<#noparse>
 	          	 <#list DictionaryUtil.getTypes(DictionaryType.SEX.getCode()) as c>
-	          	 	<input class="radio" name="sex" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+	          	 	<input class="radio" name="sex" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
 	          	 </#list>
 	          	</#noparse>
            </td>
@@ -73,7 +73,7 @@
           <td  align="left" valign="middle">
 				 <#noparse>
 				 <#list DictionaryUtil.getTypes(DictionaryType.IS_MARRY.getCode()) as c>
-	          	 	<input class="radio" name="maritalId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+	          	 	<input class="radio" name="maritalId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
 	          	 </#list>
 	          	 </#noparse>
            </td>
@@ -84,7 +84,7 @@
            <td  align="left" valign="middle">
           	<#noparse>
           	 <#list DictionaryUtil.getTypes(DictionaryType.EDUCATION.getCode()) as c>
-	          	 	<input class="radio" name="educationId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+	          	 	<input class="radio" name="educationId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
           	 </#list> 
           	 </#noparse>
            </td>
@@ -103,7 +103,7 @@
           <td  align="left" valign="middle">
 	 		 <#noparse>
 	 		 <#list DictionaryUtil.getTypes(DictionaryType.ENGLISH_LEVEL.getCode()) as c>
-	          	 	<input class="radio" name="englishLevelId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+	          	 	<input class="radio" name="englishLevelId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
           	 </#list> 
           	 </#noparse>
 		  </td>
@@ -134,7 +134,7 @@
            <td  align="left" valign="middle" clospan="3">
 	        <#noparse>
 	         <#list DictionaryUtil.getTypes(DictionaryType.JOB_POSITION.getCode()) as c>
-          	  	 <input class="radio" name="jobPositionId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+          	  	 <input class="radio" name="jobPositionId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
           	 </#list>
           	 </#noparse>
           </td>
@@ -144,7 +144,7 @@
            <td  align="left" valign="middle" clospan="3">
 			 <#noparse>
 			 <#list DictionaryUtil.getTypes(DictionaryType.JOB_POSITION_LEVE.getCode()) as c>
-          	  	 <input class="radio" name="jobPositionLevelId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+          	  	 <input class="radio" name="jobPositionLevelId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
           	 </#list>
           	 </#noparse>
            </td>
@@ -155,7 +155,7 @@
            <td  align="left" valign="middle" clospan="3">
            <#noparse>
 			<#list DictionaryUtil.getTypes(DictionaryType.SALARY_REQUIRE.getCode()) as c>
-          	  	 <input class="radio" name="salaryRequireId" type="radio" value="${c.dictionaryId}" > ${c.name!''} 
+          	  	 <input class="radio" name="salaryRequireId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
           	 </#list>
           	</#noparse>
            </td>

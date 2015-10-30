@@ -8,9 +8,9 @@
 	</comment>
 	
 	<entry key="basepackage">com.loiot.baqi</entry>
-	<entry key="moduleComment">职位匹配关键字信息</entry>
+	<entry key="moduleComment">个人信息</entry>
 	<entry key="moduleAuthor">wangzx</entry>
-	<entry key="pageTitle">匹配</entry>
+	<entry key="pageTitle">个人信息</entry>
 	
 	
 	<!-- jsp namespace: web/${namespace}/${className}/list.jsp -->

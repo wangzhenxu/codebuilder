@@ -42,6 +42,17 @@ public class ${className}Dao extends SqlSessionDaoSupport{
     }
     
     /**
+     * 修改 ${moduleComment}
+     * 
+     * @param p 参数对象
+     */
+    public void update${className}(HashMap<String,Object> pMap)throws Exception {
+        this.getSqlSession().update("${className}.update${className}ByMap", pMap);
+    }
+    
+    
+    
+    /**
      * 删除  ${moduleComment}
      * 
      * @param id 主键

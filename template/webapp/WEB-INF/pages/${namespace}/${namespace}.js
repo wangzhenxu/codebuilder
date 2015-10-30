@@ -34,7 +34,7 @@ var ${namespaceLower} = {
 		common.initLeftMenuSelected(self.left_menu_selected_id);
 
 		//初始化标题
-		common.initPageTitle();
+		common.initPageTitle(self._title_val,self.m_title);
 		//列表页面
 		if(self.currPage!="list"){
 			self.addform.validationEngine({scroll:false});
@@ -263,6 +263,6 @@ private ${className}Id id;
 	</#if>
 </#list>
 	<#if inPerson!="">
-		self.inPersonName : obj.inPersonName;
+		self.inPersonName.html(obj.inPersonName);
 	</#if>
 </#macro>

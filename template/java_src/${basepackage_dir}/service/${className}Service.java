@@ -113,6 +113,15 @@ public class ${className}Service{
     }
     
     /**
+     * 修改 ${moduleComment}
+     * 
+     * @param p 参数对象
+     */
+    public void update${className}(HashMap<String,Object> pMap)throws Exception {
+        ${classNameLower}Dao.update${className}(pMap);
+    }
+    
+    /**
      * 删除  ${moduleComment}
      * 
      * @param id 主键

@@ -84,6 +84,24 @@
 		</trim>
 		WHERE ${pkColumn}=${r"#{"+"${pkColumnNameLower}"+"}"}
 	</update>
+	
+	
+	<!-- 修改 ${moduleComment}byMAP -->
+	<update id="update${className}byMAP" >
+		UPDATE  ${table.sqlName}
+		<trim prefix="set" suffixOverrides=",">
+			<#list table.columns as column>
+			        <#if !column.pk>
+			        	<if test="${column.columnNameLower} != null">
+			        		${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"},
+			        	</if>
+			        </#if>
+			  </#list>
+		</trim>
+		WHERE 1=1
+		<if test="qtype != null and qtype=='one'">
+		</if>
+	</update>
 
 	<!-- 删除  ${moduleComment} -->
 	<delete id="delete${className}">
