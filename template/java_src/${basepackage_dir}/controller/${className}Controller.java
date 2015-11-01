@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.loiot.baqi.pojo.*;
 import com.loiot.baqi.constant.Const;
+import com.loiot.baqi.constant.URLConst;
 import com.loiot.baqi.controller.response.AjaxResponse;
 import com.loiot.baqi.controller.response.Pager;
 import com.loiot.baqi.service.*;
@@ -151,6 +152,9 @@ public class ${className}Controller {
     @RequestMapping(value = "/toEdit")
     public String toEdit${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id, ModelMap model)throws Exception {
         //model.put("p", ${classNameLower}Service.get${className}ById(id));
+    	if(id==null){
+    		return URLConst.ERROR_URL;
+    	}
     	model.put("pid",  id);
         return "/${namespace}/${namespace}_add";
     }
@@ -193,7 +197,10 @@ public class ${className}Controller {
      */
     @RequestMapping(value = "/toView")
     public String toView${className}(@RequestParam(value = "id", required = true) ${table.idColumn.javaType} id, ModelMap model)throws Exception {
-        //model.put("p", ${classNameLower}Service.get${className}ById(id));
+    	if(id==null){
+    		return URLConst.ERROR_URL;
+    	}
+    	//model.put("p", ${classNameLower}Service.get${className}ById(id));
     	 model.put("pid",  id);
     	return "/${namespace}/${namespace}_add";
     }
