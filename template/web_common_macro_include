@@ -2,9 +2,6 @@
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
 
-<!-- 
-	<@generateFields/>
-	
 	<#macro generateFields>
 <#if table.compositeId>
 	private ${className}Id id;
@@ -21,4 +18,3 @@
 </#if>
 
 </#macro>	
--->

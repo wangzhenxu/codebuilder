@@ -55,6 +55,8 @@ public class ${className}Controller {
 	
 	private ${className} ${classNameLower};
 	
+	private HashMap<String,Object> pmap = new HashMap<String,Object>();
+	
 	/**
      * 跳转  ${moduleComment}列表页
      * 
@@ -124,9 +126,9 @@ public class ${className}Controller {
     	try {
             Account account = (Account) session.getAttribute(Const.SESSION_USER_KEY);
     		//验证唯一性
-        	HashMap<String,Object> pMap =new HashMap<String,Object>();
-        	pMap.put("name", p.getName());
-        	int result=${classNameLower}Service.get${className}ListCount(pMap);
+            pmap.clear();
+            pmap.put("name", p.getName());
+        	int result=${classNameLower}Service.get${className}ListCount(pmap);
         	if(result>0){
 		        return NAME_EXIST;
 			}
@@ -175,9 +177,9 @@ public class ${className}Controller {
         	String onlyName=request.getParameter("onlyName");
         	if(!StringUtils.isBlank(onlyName) &&  !p.getName().equals(onlyName)){
 	    	//验证唯一性
-	    	HashMap<String,Object> pMap =new HashMap<String,Object>();
-	    	pMap.put("name", p.getName());
-	    	int result=${classNameLower}Service.get${className}ListCount(pMap);
+        	pmap.clear();
+        	pmap.put("name", p.getName());
+	    	int result=${classNameLower}Service.get${className}ListCount(pmap);
 	    	if(result>0){
 		        return NAME_EXIST;
 			}

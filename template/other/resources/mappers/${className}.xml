@@ -136,6 +136,13 @@
 				        		AND ${tableAs}.name like <#noparse>'%${nameT}%' </#noparse>
 			        	</if>
 					</if>
+					<#if inTime!="">
+					  <#noparse>
+					  <if test="startTimeT != null and startTimeT !='' ">
+				      	<![CDATA[ AND (ji.in_time>#{startTimeT} AND ji.in_time<#{endTimeT}  ) ]]>	
+				 	 </if>
+				 	   </#noparse>
+				 	 </#if>
 					<#list table.columns as column>
 				        	<if test="${column.columnNameLower} != null and ${column.columnNameLower} !='' ">
 				        		AND ${tableAs}.${column.sqlName}=${r"#{"+"${column.columnNameLower}"+"}"} 

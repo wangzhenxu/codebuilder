@@ -33,61 +33,128 @@
      </#if>
    </#noparse>
      <div class="form2">
-     <table width="100%"  border="1" align="left" cellpadding="0" cellspacing="0" bordercolor="#ffffff" style="border-collapse:collapse">
+     
+       <@generateTable/>
+     
+     </div>
+	 <#-- 分页栏 -->
+	 <#noparse>
+     <@pageBar  </#noparse> pager=pager url="/${classNameLower}/list.action?jsonParam=<#noparse>${jsonParam!''}</#noparse>" join="&"> <#noparse></@pageBar> </#noparse>
+    
+    </div>
+   </div>
+  <!-- 弹窗 结束 -->
+  	<#noparse>
+	<#include "../include/deleteConfirmModal.ftl">
+	</#noparse>
+    <script src="/js/${namespace}.js"></script>
+    <script>
+		${namespace}.initPage();
+	</script>
+</html>
+
+
+
+<#macro generateQueryForm>
+  	<#assign countIteam =0 />
+  	<#assign countIteamT =0 />
+  	
+	<form id="queryForm" >
+	<ul>
+			 <li style="width:22%">
+		       	<span class="classify">公司名称：</span>
+		    	<input name="name" type="text"   class="input"  id="name" value="${name!''}"/>
+		      </li>
+		<#list table.columns as column>
+		<#if column.pk>
+			<#elseif column.javaType=="java.lang.Long" >
+			<#assign countIteamT = countIteamT+1 />
+			    <#if countIteam?number lt 4>
+			    	<#assign countIteam = countIteam+1 />
+			       <li style="width:15%">
+			       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
+			    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
+			    		 <option value="" > 请选择 </option>
+			    		  <#noparse>
+			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!="" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
+			 			 	</#list>
+					  	</#noparse>
+			    	</select>
+			       </li>
+		    </#if></#if></#list>
+		    <li style="width:5%"><a href="javascript:void(0)">
+  		 		<button type="button" class="btn btn-default" id="queryBtn" >查&nbsp;询</button>
+       		</li>
+      </ul>
+      
+     <#if countIteamT gt 4>
+        <#assign countIteam = 0 />
+      	<ul>
+  		<#list table.columns as column>
+			<#if column.pk>
+			<#elseif column.javaType=="java.lang.Long" >
+				    <#assign countIteam = countIteam+1 />
+				   <#if countIteam gt 4>
+				       <li style="width:15%">
+				       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
+				    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
+			    		 <option value="" > 请选择 </option>
+			    		  <#noparse>
+			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
+			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!="" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
+			 			 	</#list>
+					  	</#noparse>
+			    		  </select>
+				       </li>
+			       </#if>
+	          </#if>
+          </#list>
+      	</ul>
+      </#if>
+  </form>
+</#macro>
+
+<#-- 生成表格-->
+<#macro generateTable>
+<table width="100%"  border="1" align="left" cellpadding="0" cellspacing="0" bordercolor="#ffffff" style="border-collapse:collapse">
       <tr class="lan">
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>公司名称</strong></td>
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>公司地点</strong></td>
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>所属行业</strong></td>
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>公司规模</strong></td>
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>公司性质</strong></td>
-         <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>融资规模</strong></td>
-        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>录入时间</strong></td>
+      
+      <#list table.columns as column>
+    	<#if column.pk>
+		<#else>
+        <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>${column.columnAlias?replace("id","")?replace("Id","")}</strong></td>
+      	</#if>
+      </#list>
         <td height="37" align="center" valign="middle" background="/images/erji_22.jpg"><strong>操 作</strong></td>
        </tr>
        <#noparse>
        <#list pager.data as c>
-       
        <tr>
        </#noparse>
-       <#noparse>
-        <td align="center" class="hui" title="${c.name!''}">${StringUtil.truncate(c.name,14,"...")}</td>
-        <td align="center" class="hui" title="${c.address!''}">${StringUtil.truncate(c.address,10,"...")}</td>
-        <td align="center" class="hui">
-      	</#noparse>
-      	  <#noparse>
-      	  <#if c.industryId??> 	
-        	${DictionaryUtil.getName(c.industryId)}<#else>无
-      	  </#if>
-      	 </#noparse>
-        </td>
-        <td align="center" class="hui">
-        <#noparse>
-    	 <#if c.scaleId??> 	
-    		${DictionaryUtil.getName(c.scaleId)}<#else>无
-  	 	 </#if>
-  	 	 </#noparse>
-        </td>
-        <td align="center" class="hui">
-        <#noparse>
-        <#if c.companyNature??> 	
-    		${DictionaryUtil.getName(c.companyNature)}<#else>无
-  	 	 </#if>
-  	 	 </#noparse>
-        </td>
-        <td align="center" class="hui">
-        <#noparse>
-        <#if c.financingLevelId??> 	
-    		${DictionaryUtil.getName(c.financingLevelId)}<#else>无
-  	 	 </#if>
-  	 	 </#noparse>
-        </td>
-         <td align="center" class="hui">
-         <#noparse>
-	         <#if c.lastUpdateTime??>
-	         	${c.lastUpdateTime?string("yyyy-MM-dd")}
-	 		</#if>
-	 	</#noparse>
-        </td>
+       
+       <#list table.columns as column>
+    	<#if column.pk>
+    		<#elseif column.javaType=="java.util.Date" >
+		 <td align="center" class="hui">
+    			 <#noparse><#if c.</#noparse>${column.columnNameLower}<#noparse>??></#noparse>
+	        	 	<#noparse> ${c.</#noparse>${column.columnNameLower}?string("yyyy-MM-dd")<#noparse>}</#noparse>
+	 		 	 <#noparse></#if></#noparse>
+	 	 </td>
+	 	 <#elseif column.javaType=="java.lang.Long" >
+	 	  <td align="center" class="hui">
+	 	  <#noparse><#if c.</#noparse>${column.columnNameLower}<#noparse>??></#noparse>
+	 	    <#if column.columnNameLower=="inPerson">
+	 	    	<#noparse>${c.</#noparse>${column.columnNameLower}<#noparse>}</#noparse>
+	 	    	<#else>
+	 	    	<#noparse>${DictionaryUtil.getName(c.</#noparse>${column.columnNameLower}<#noparse>)} </#noparse>
+	 	    </#if>
+	 	  <#noparse></#if></#noparse>
+	 	   </td>
+		<#else>
+		  <td align="center" class="hui"><#noparse>${c.</#noparse>${column.columnNameLower}!''<#noparse>}</#noparse></td>
+      	</#if>
+       </#list>
         
 		 <td align="center" class="hui" style="width:300px;"  >
 	       		<div class="btn-group">
@@ -130,7 +197,6 @@
        <#noparse>
        </#list>
        </#noparse>
-       </#
        <tr>
      	 <td colspan="10" valign="middle" class="d">
      	 
@@ -146,82 +212,6 @@
      	 </td>
        </tr>
       </table>
-     </div>
-	 <#-- 分页栏 -->
-	 <#noparse>
-     <@pageBar  </#noparse> pager=pager url="/${className}/list.action?jsonParam=<#noparse>${jsonParam!''}</#noparse>" join="&"> <#noparse></@pageBar> </#noparse>
-    
-    </div>
-   </div>
-  <!-- 弹窗 结束 -->
-  	<#noparse>
-	<#include "../include/deleteConfirmModal.ftl">
-	</#noparse>
-    <script src="/js/${namespace}.js"></script>
-    <script>
-		${namespace}.initPage();
-	</script>
-</html>
-
-
-
-<#macro generateQueryForm>
-  	<#assign countIteam =0 />
-  	<#assign countIteamT =0 />
-  	
-	<form id="queryForm" >
-	<ul>
-			 <li style="width:22%">
-		       	<span class="classify">公司名称：</span>
-		    	<input name="name" type="text"   class="input"  id="name" value="${name!''}"/>
-		      </li>
-		<#list table.columns as column>
-		<#if column.pk>
-			<#elseif column.javaType=="java.lang.Long" >
-			<#assign countIteamT = countIteamT+1 />
-			    <#if countIteam?number lt 4>
-			    	<#assign countIteam = countIteam+1 />
-			       <li style="width:15%">
-			       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
-			    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
-			    		 <option value="" > 请选择 </option>
-			    		  <#noparse>
-			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
-			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
-			 			 	</#list>
-					  	</#noparse>
-			    	</select>
-			       </li>
-		    </#if></#if></#list>
-		    <li style="width:5%"><a href="javascript:void(0)">
-  		 		<button type="button" class="btn btn-default" id="queryBtn" >查&nbsp;询</button>
-       		</li>
-      </ul>
-      
-     <#if countIteamT gt 4>
-        <#assign countIteam = 0 />
-      	<ul>
-  		<#list table.columns as column>
-			<#if column.pk>
-			<#elseif column.javaType=="java.lang.Long" >
-				    <#assign countIteam = countIteam+1 />
-				   <#if countIteam gt 4>
-				       <li style="width:15%">
-				       	<span class="classify">${column.columnAlias?replace("id","")?replace("Id","")}：</span>
-				    	<select id="${column.columnNameLower}" name="${column.columnNameLower}">
-			    		 <option value="" > 请选择 </option>
-			    		  <#noparse>
-			    		    <#list DictionaryUtil.getTypes(DictionaryType.COMPANY_INDUSTRY.getCode()) as c></#noparse>
-			    		 		 <#noparse><option value="${c.dictionaryId}" <#if </#noparse> ${column.columnNameLower}<#noparse>?? &&</#noparse> ${column.columnNameLower}!=" <#noparse>> <#if</#noparse> ${column.columnNameLower}<#noparse>?number==c.dictionaryId> selected </#if> </#if>  > ${c.showName!''} </option>
-			 			 	</#list>
-					  	</#noparse>
-			    		  </select>
-				       </li>
-			       </#if>
-	          </#if>
-          </#list>
-      	</ul>
-      </#if>
-  </form>
 </#macro>
+
 
