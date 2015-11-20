@@ -174,6 +174,19 @@ public class ${className}Dao extends SqlSessionDaoSupport{
         return getSqlSession().selectList("${className}.query${className}List",p);
     }
     
+    /**
+     * 统计 ${moduleComment}列表
+     * 
+     * @return ${moduleComment}列表
+     */
+    public List<HashMap<String,Object>> statistics${className}Info(HashMap<String, Object> pMap )throws Exception {
+    	List<HashMap<String,Object>> p = null; 
+    	p =(List)getSqlSession().selectList("${className}.statistics${className}Info",p);
+    	return p;
+    }
+    
+    
+    
     
 
 }

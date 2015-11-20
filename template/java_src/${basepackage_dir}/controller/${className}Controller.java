@@ -296,7 +296,7 @@ public class ${className}Controller {
     	if("edit".equals(flag) && oldName.equals(name)){
         	return AjaxResponse.OK(null);
     	} 
-    	int result=zpCompanyInfoService.getZpCompanyInfoListCount(pmap);
+    	int result=${classNameLower}Service.get${className}ListCount(pmap);
     	if(result>0){
 	        return NAME_EXIST;
 		}
