@@ -223,4 +223,13 @@ public class ${className}Service{
         }
         return idsList;
     }
+    
+    /**
+     * 统计 ${moduleComment}列表
+     * 
+     * @return ${moduleComment}列表
+     */
+    public List<HashMap<String,Object>> statistics${className}Info(HashMap<String, Object> pMap )throws Exception {
+    	return  ${classNameLower}Dao.statistics${className}Info(pMap);
+    }
 }

@@ -13,6 +13,7 @@ var ${namespaceLower} = {
 	toViewUrl:"/${classNameLower}/toView.action?id=", //详细页面地址
 	getByIdUrl : "/${classNameLower}/getById.action", //根据id查询对象
 	modifyDeleteStatusUrl:"/${classNameLower}/modifyDeleteStatus.action", //停用 或启用
+	checkNameExitsUrl : "/${classNameLower}/checkNameExits.action", //检验唯一性,
 
 	onlyName :  $("#onlyName"), //修改，唯一验证时需要添加此属性
 	m_title : $(".m_title"),//页面标题
@@ -93,6 +94,15 @@ var ${namespaceLower} = {
 	initAddPage : function (){
 		var self = this;
 		self.addform.attr("action",self.addUrl);
+		//检验名称唯一性
+		/*self.name.blur(function(){
+				if($.trim(this.value).length>0){
+					var param = {flag : common.getCurrPageFlag(),name:this.value};
+					self.checkNameExits(param,self.checkNameExitCallBack);
+				} 
+		});*/
+		
+		
 	},
 	//初始化详情页面数据
 	initDetailPage : function(){
@@ -160,6 +170,13 @@ var ${namespaceLower} = {
 			}
 		});
 		self.addform.attr("action",self.editUrl);
+		//检验名称唯一性
+		/*self.name.blur(function(){
+				if($.trim(this.value).length>0){
+					var param = {flag : common.getCurrPageFlag(),name:this.value,oldname:self.onlyName.val()};
+					self.checkNameExits(param,self.checkNameExitCallBack);
+				} 
+		});*/
    },
    //根据id查询信息
    getById : function (id,callBack){
@@ -204,6 +221,21 @@ var ${namespaceLower} = {
 	   self.onlyName.val(obj.name);
 	   //赋值
 	  <@generateUpdateFields/>
+   },
+   //检查名称唯一性
+   checkNameExits : function (param,callBack){
+	   var self =this;
+		$.ajax({
+			url : self.checkNameExitsUrl,
+			data : param,// 
+			success :callBack
+		});
+   },
+   //检查名称，回调
+   checkNameExitCallBack : function (result){
+	   if (result.s < 0) {
+		   common.alert(result.d,2000);
+	   }  
    }
 }
 <#macro generateFields>

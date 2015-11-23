@@ -278,5 +278,30 @@ public class ${className}Controller {
         return "redirect:"+redirectStr;
     }
     
+    /**
+     * 查询，名称是否存在，验证唯一性
+     * @return
+     * @throws Exception 
+     */
+    @RequestMapping(value = "/checkNameExits")
+    @ResponseBody
+    public Object checkNameExits(@RequestParam(value = "name", required = true) java.lang.String name,
+    		@RequestParam(value = "oldname",required = false) java.lang.String oldName,
+    		@RequestParam(value = "flag", required = true) String flag
+    		) throws Exception
+    {
+    	//验证唯一性
+    	pmap.clear();
+    	pmap.put("name", name);
+    	if("edit".equals(flag) && oldName.equals(name)){
+        	return AjaxResponse.OK(null);
+    	} 
+    	int result=${classNameLower}Service.get${className}ListCount(pmap);
+    	if(result>0){
+	        return NAME_EXIST;
+		}
+    	return AjaxResponse.OK(null);
+    }
+    
 
 }
