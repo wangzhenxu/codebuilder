@@ -95,10 +95,10 @@ public class ${className}Controller {
     		Object val = entry.getValue();
     		if(key.toString().equals("name")){
     			newParamMap.put("nameT", val);
-    		}else{
-    			newParamMap.put(String.valueOf(key), val);
+    		}else
+    		if(String.valueOf(val).length()>0){
+        		model.put(String.valueOf(key), val);
     		}
-    		model.put(String.valueOf(key), val);
 		}
 		return newParamMap;
     }
