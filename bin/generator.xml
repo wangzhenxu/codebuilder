@@ -22,8 +22,8 @@
 	<!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
 	<entry key="tableRemovePrefixes"></entry>
 	
-	<entry key="jdbc.username">root</entry>
-	<entry key="jdbc.password">jlb2015</entry>
+	<entry key="jdbc.username">testdev</entry>
+	<entry key="jdbc.password">testdev</entry>
 		
 	<!-- oracle需要指定jdbc.schema,并且可能要大写，其它数据库忽略此项配置  -->
 	<entry key="jdbc.schema"></entry>

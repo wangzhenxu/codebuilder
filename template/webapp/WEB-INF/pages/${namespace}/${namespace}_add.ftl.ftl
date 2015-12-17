@@ -4,7 +4,6 @@
 <@gmc_common_js "add" />
 </#noparse>
 <form id="addform" name="form"  method="post">
-
 <#list table.columns as column>
 	<#if column.pk>
 <input type="hidden" name="${column.columnNameLower}" id="${column.columnNameLower}" <#noparse> value="${pid!''}" </#noparse> />
@@ -26,142 +25,39 @@
          <tr>
            <td colspan="4" class="red">* 号为必填项</td>
          </tr>
-         <tr>
-           <td  align="right" class="hui1">上传简历：</td>
-           <td  align="left" valign="middle">
-	         <div class="uploadlay">
-	           <div id="ui-upload-holder">
-	             <div id="ui-upload-txt">浏览</div>
-	             <input type="file" id="ui-upload-input" class="ui-upload-input" name="ui-upload-input" onchange="jlInfo.upload(this);">
-	             </div>
-	         </div>
-          </td>
-          <td  clospan="2" ></td>
-         </tr>
          
-         <tr>
-           <td  align="right" class="hui1">姓名：</td>
+   <#list table.notPkColumns as column>
+     
+    <tr>
+           <td  align="right" class="hui1"><#if !column.nullable><span class="red">*</span></#if>${column.columnAlias} ：</td>
            <td  align="left" valign="middle">
-          	 <input name="name" id="name" type="text" class="input validate[required]">
-           </td>
-          <td align="right" class="hui1">电话：</td>
-          <td  align="left" valign="middle">
-          	 <input name="phone" id="phone" type="text" class="input validate[required]">
-          </td>
-         </tr>
-         
-         <tr>
-           <td  align="right" class="hui1">性别：</td>
-           <td  align="left" valign="middle">
-	          	<#noparse>
-	          	 <#list DictionaryUtil.getTypes(DictionaryType.SEX.getCode()) as c>
-	          	 	<input class="radio" name="sex" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-	          	 </#list>
-	          	</#noparse>
-           </td>
-          <td align="right" class="hui1">邮箱：</td>
-          <td  align="left" valign="middle">
-          	 <input name="emal" id="emal" type="text" class="input validate[required]">
-          </td>
-         </tr>
-          <tr>
-           <td  align="right" class="hui1">身份证：</td>
-           <td  align="left" valign="middle">
-          	 <input name="identityCard" id="identityCard" type="text" class="input validate[required]">
-           </td>
-          <td align="right" class="hui1">婚否：</td>
-          <td  align="left" valign="middle">
-				 <#noparse>
-				 <#list DictionaryUtil.getTypes(DictionaryType.IS_MARRY.getCode()) as c>
-	          	 	<input class="radio" name="maritalId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-	          	 </#list>
-	          	 </#noparse>
-           </td>
-         </tr>
-         
-          <tr>
-           <td  align="right" class="hui1">最高学历：</td>
-           <td  align="left" valign="middle">
-          	<#noparse>
-          	 <#list DictionaryUtil.getTypes(DictionaryType.EDUCATION.getCode()) as c>
-	          	 	<input class="radio" name="educationId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-          	 </#list> 
+          	<#if column.isStringColumn>
+          		<#if column.size lt 50>
+          	   			<input name="${column.columnNameLower}" id="${column.columnNameLower}" type="text" class="input <#if !column.nullable> validate[required] </#if>">
+          			<#else>
+          			 <textarea  cols="45" rows="5" class="input validate[required,length[1000] text-input mokuainr ckeditor" name="${column.columnNameLower}"  id="${column.columnNameLower}" ></textarea>
+          		</#if>
+          	</#if>
+          	<#if  column.javaType=="java.lang.Long">
+          	    <#noparse>
+		 		 <#list DictionaryUtil.getTypes(DictionaryType.ENGLISH_LEVEL.getCode()) as c>
+		          	 	<input class="radio" name="{column.columnNameLower}" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
+	          	 </#list> 
           	 </#noparse>
+          	</#if>
+          	
+          		<#if  column.isDateTimeColumn>
+          	   <input name="${column.columnNameLower}" id="${column.columnNameLower}" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM'})" >
+          	</#if>
+          	
            </td>
-          <td align="right" class="hui1">学校名称：</td>
-          <td  align="left" valign="middle">
-          	 <input name="schoolTag" id="schoolTag" type="text" >
-          </td>
-         </tr>
+     </tr>
+ </#list>
          
-         <tr>
-           <td  align="right" class="hui1">专业：</td>
-           <td  align="left" valign="middle">
-          	   <input name="topSpecialty" id="topSpecialty" type="text" >
-           </td>
-          <td align="right" class="hui1">英语等级：</td>
-          <td  align="left" valign="middle">
-	 		 <#noparse>
-	 		 <#list DictionaryUtil.getTypes(DictionaryType.ENGLISH_LEVEL.getCode()) as c>
-	          	 	<input class="radio" name="englishLevelId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-          	 </#list> 
-          	 </#noparse>
-		  </td>
-         </tr>
          
-          <tr>
-           <td  align="right" class="hui1">出生年月：</td>
-           <td  align="left" valign="middle">
-          	 <input name="birthday" id="birthday" onClick="WdatePicker({dateFmt:'yyyy-MM'})" type="text" >
-           </td>
-          <td align="right" class="hui1"></td>
-          <td  align="left" valign="middle">
-          </td>
-         </tr>
-          <tr>
-           <td  align="right" class="hui1">工作开始时间：</td>
-           <td  align="left" valign="middle">
-          	 <input name="jobStartTimeT" id="jobStartTimeT" onClick="WdatePicker({dateFmt:'yyyy-MM'})" type="text" >
-           </td>
-          <td align="right" class="hui1">现住址：</td>
-          <td  align="left" valign="middle">
-                       <input name="nowAddress" id="nowAddress" type="text" >
-          </td>
-         </tr>
          
-         <tr>
-           <td  align="right" class="hui1">职位：</td>
-           <td  align="left" valign="middle" clospan="3">
-	        <#noparse>
-	         <#list DictionaryUtil.getTypes(DictionaryType.JOB_POSITION.getCode()) as c>
-          	  	 <input class="radio" name="jobPositionId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-          	 </#list>
-          	 </#noparse>
-          </td>
-         </tr>
-         <tr>
-           <td  align="right" class="hui1">职位级别：</td>
-           <td  align="left" valign="middle" clospan="3">
-			 <#noparse>
-			 <#list DictionaryUtil.getTypes(DictionaryType.JOB_POSITION_LEVE.getCode()) as c>
-          	  	 <input class="radio" name="jobPositionLevelId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-          	 </#list>
-          	 </#noparse>
-           </td>
-         </tr>
+        
          
-          <tr>
-           <td  align="right" class="hui1">薪水要求：</td>
-           <td  align="left" valign="middle" clospan="3">
-           <#noparse>
-			<#list DictionaryUtil.getTypes(DictionaryType.SALARY_REQUIRE.getCode()) as c>
-          	  	 <input class="radio" name="salaryRequireId" type="radio" value="${c.dictionaryId}" > ${c.showName!''} 
-          	 </#list>
-          	</#noparse>
-           </td>
-         </tr>
-          
-          <@generateDetailInfo/>
          
          </table>
 
