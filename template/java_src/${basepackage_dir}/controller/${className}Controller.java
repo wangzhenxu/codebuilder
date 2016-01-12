@@ -97,6 +97,7 @@ public class ${className}Controller {
     			newParamMap.put("nameT", val);
     		}else
     		if(String.valueOf(val).length()>0){
+    			newParamMap.put(String.valueOf(key), val);
         		model.put(String.valueOf(key), val);
     		}
 		}

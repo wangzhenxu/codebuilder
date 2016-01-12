@@ -8,22 +8,22 @@
 	</comment>
 	
 	<entry key="basepackage">com.loiot.baqi</entry>
-	<entry key="moduleComment">流程</entry>
+	<entry key="moduleComment">建议</entry>
 	<entry key="moduleAuthor">wangzx</entry>
-	<entry key="pageTitle">流程</entry>
+	<entry key="pageTitle">建议</entry>
 
 	
 	
 	<!-- jsp namespace: web/${namespace}/${className}/list.jsp -->
-	<entry key="namespace">recommendflow</entry>
+	<entry key="namespace">suggestInfo</entry>
 
 	<entry key="outRoot">d:\generator-output</entry>
 	
 	<!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
 	<entry key="tableRemovePrefixes"></entry>
 	
-	<entry key="jdbc.username">testdev</entry>
-	<entry key="jdbc.password">testdev</entry>
+	<entry key="jdbc.username">coding_dev</entry>
+	<entry key="jdbc.password">codingdev</entry>
 		
 	<!-- oracle需要指定jdbc.schema,并且可能要大写，其它数据库忽略此项配置  -->
 	<entry key="jdbc.schema"></entry>
@@ -42,7 +42,7 @@
 	<!--	
 	<entry key="jdbc.url">jdbc:mysql://123.57.250.160:3306/testdb?useUnicode=true&amp;characterEncoding=UTF-8</entry>
 	-->
-	<entry key="jdbc.url">jdbc:mysql://123.57.250.160:3306/testdb?useUnicode=true&amp;characterEncoding=UTF-8</entry>
+	<entry key="jdbc.url">jdbc:mysql://123.57.250.160:3306/coding?useUnicode=true&amp;characterEncoding=UTF-8</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 
 	<!-- Oracle		jdbc:oracle:oci:@tnsname_devdb

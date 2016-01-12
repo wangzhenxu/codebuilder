@@ -39,7 +39,7 @@ public class GeneratorMain {
 //		g.generateByTable("performance_userDetail","template");
 	      
 		
-		g.generateByTable("zp_recommend_flow_info","template");
+		g.generateByTable("tg_suggest_bug_info","template");
 	
 		
  

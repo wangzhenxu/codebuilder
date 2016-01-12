@@ -25,7 +25,7 @@
     </div>
     <div class="form">
     <#noparse>
-      <#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:add  -->
+      <#if subject.isPermitted("accountExpandInfo:detail")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:add  -->
     		<div class="btn-group">
 			  <button type="button" class="btn btn-default"  onclick="${namespace}.toAdd();">增加${pageTitle!''}</button>
 	      	</div>
@@ -159,21 +159,21 @@
 		 <td align="center" class="hui" style="width:300px;"  >
 	       		<div class="btn-group">
 	       		 <#noparse>
-      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse>  <#noparse><#--</#noparse>${classNameLower}:detail  -->
+      			<#if subject.isPermitted("accountExpandInfo:detail")> </#noparse>  <#noparse><#--</#noparse>${classNameLower}:detail  -->
 				  <button type="button" class="btn btn-default"  onclick="${namespace}.toDetail('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">详情</button>
 				 <#noparse>
 				 </#if>
 				 </#noparse>
 				 
 				   <#noparse>
-      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:edit  -->
+      			<#if subject.isPermitted("accountExpandInfo:detail")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:edit  -->
 				  <button type="button" class="btn btn-default"  onclick="${namespace}.toEdit('<#noparse>${</#noparse>c.${pk}<#noparse>}</#noparse>')">修改</button>
 				  <#noparse>
 				 </#if>
 				 </#noparse>
 				 
 				    <#noparse>
-      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:disableAndEnabled  -->
+      			<#if subject.isPermitted("accountExpandInfo:detail")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:disableAndEnabled  -->
 				   <#noparse>
 				  <#if c.isDelete??>
 				  </#noparse>
@@ -201,7 +201,7 @@
      	 <td colspan="10" valign="middle" class="d">
      	 
      	   <#noparse>
-      			<#if subject.isPermitted("zpJlInfo:list")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:delete  -->
+      			<#if subject.isPermitted("accountExpandInfo:detail")> </#noparse> <#noparse><#--</#noparse>${classNameLower}:delete  -->
 		    <#noparse>
      	 	 <div class="btn-group" style="display:none;">
 			   <button type="button" class="btn btn-default"  onclick="javascipt:void(0);">删除</button>
